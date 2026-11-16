@@ -33,7 +33,6 @@
 │   └── test_interaction_log.py
 ├── data/
 │   ├── wyu/                   # 公开资料 txt（29 份）
-│   ├── wyu_archive/           # 归档的教师/管理员材料（不参与索引）
 │   ├── index/wyu/             # chunks.pkl + faiss.index
 │   └── logs/                  # 问答日志（gitignore）
 ├── .env.example
@@ -138,7 +137,6 @@ streamlit run ui/wyu_app.py
 - **135 个** `chunks.pkl` 切片；
 - **135 条** Faiss 向量（1024 维）；
 - 新增 2024 年课程考核、学分与课程修读、考试纪律文件，以及学籍/学位表格入口；
-- 6 份教师/管理员材料保留在 `data/wyu_archive/`，不参与索引。
 
 已完成导航/页脚清洗，并重建 BM25 + Faiss。旧版 50 题离线结果和旧版截图已清理。
 
