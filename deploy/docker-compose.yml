@@ -1,0 +1,11 @@
+services:
+  yiwentong:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: yiwentong
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    ports:
+      - "8501:8501"

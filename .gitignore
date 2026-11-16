@@ -7,3 +7,5 @@ __pycache__/
 .streamlit/secrets.toml
 data/logs/
 *.log
+.env.production
+deploy/.env.production
