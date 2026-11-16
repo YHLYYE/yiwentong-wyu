@@ -13,6 +13,7 @@
 WYU_USE_DENSE = "0"
 WYU_OFFLINE = "1"
 WYU_DEMO_PASSWORD = "WYU-demo-2026"
+WYU_COVERAGE_MIN = "0.5"
 ```
 
 5. 点击 Deploy，得到 `https://<应用名>.streamlit.app` 链接。

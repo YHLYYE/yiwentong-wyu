@@ -42,7 +42,7 @@ MODEL = os.environ.get("WYU_MODEL_PATH", "BAAI/bge-m3")
 MAX_LEN = 512
 BM25_MIN = float(os.environ.get("WYU_BM25_MIN", "1.0"))
 DENSE_MIN = float(os.environ.get("WYU_DENSE_MIN", "0.65"))
-COVERAGE_MIN = float(os.environ.get("WYU_COVERAGE_MIN", "0.6"))
+COVERAGE_MIN = float(os.environ.get("WYU_COVERAGE_MIN", "0.5"))
 
 OUT_OF_SCOPE_RULES = (
     (
