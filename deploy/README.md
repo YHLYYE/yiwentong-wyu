@@ -32,6 +32,16 @@ WYU_DEMO_PASSWORD=换成正式口令
 
 ## 4. 启动
 
+推荐直接运行一键脚本，脚本会安装 Python 依赖、写入演示口令并注册 systemd 服务：
+
+```bash
+bash deploy/install_ubuntu.sh
+```
+
+然后确认云厂商安全组放行 TCP 8501。
+
+如果使用 Docker，也可以执行：
+
 ```bash
 docker compose -f deploy/docker-compose.yml up -d --build
 ```
