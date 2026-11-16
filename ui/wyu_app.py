@@ -137,7 +137,7 @@ def render_answer(qa: HybridQA, question: str, answer: str, bm25, dense):
                 snippet = hit.chunk.text.strip()
                 if len(snippet) > 300:
                     snippet = snippet[:300] + "…"
-                st.code(snippet, language="text")
+                st.text(snippet)
 
 
 def student_view(qa: HybridQA, log: InteractionLog) -> None:
