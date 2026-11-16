@@ -1,0 +1,9 @@
+torch>=2.2
+# bge-m3 的常见 .bin 权重在 transformers 5 + torch 2.5 下会被安全检查拒绝；
+# 固定 4.x 以兼容更多评委环境。若坚持 5.x，请把 torch 升到 2.6+。
+transformers>=4.40,<5
+faiss-cpu>=1.8
+openai>=1.0
+python-dotenv>=1.0
+numpy>=1.24
+streamlit>=1.30
