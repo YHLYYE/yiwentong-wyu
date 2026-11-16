@@ -106,3 +106,17 @@ def test_amount_evidence_must_be_near_question_topic():
         )
     ]
     assert not has_amount_evidence("生源地助学贷款最高多少", mixed)
+
+def test_expanded_aid_terms_are_in_scope():
+    assert classify_question_scope("临时困难补助是什么") == "in_scope"
+    assert classify_question_scope("绿色通道怎么申请") == "in_scope"
+    assert classify_question_scope("国家助学贷款怎么申请") == "in_scope"
+
+def test_definition_question_about_subsidy_does_not_require_amount():
+    hits = [
+        RetrievedChunk(
+            Chunk("x", "临时困难补助用于突发情况或特殊事件导致家庭经济困难的学生。", "奖助项目概览"),
+            1.0,
+        )
+    ]
+    assert has_amount_evidence("临时困难补助是什么", hits)

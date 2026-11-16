@@ -35,7 +35,7 @@ except Exception:
 
 from models import Chunk, RetrievedChunk
 from rag.bm25 import BM25Retriever, zh_tokenize, query_coverage
-from rag.hybrid import merge_and_rerank
+from rag.hybrid import merge_and_rerank, rerank_by_query_coverage
 
 INDEX_DIR = ROOT / "data" / "index" / "wyu"
 MODEL = os.environ.get("WYU_MODEL_PATH", "BAAI/bge-m3")
@@ -75,7 +75,9 @@ IN_SCOPE_TERMS = (
     "学分", "期末", "等级考试", "创新创业", "学籍", "转专业",
     "休学", "复学", "退学", "辅修", "推免", "保研", "交换生",
     "违纪处分", "申诉", "奖学金", "助学金", "困难认定", "资助",
-    "勤工助学", "助学贷款", "毕业", "学位",
+    "勤工助学", "助学贷款", "贷款", "补助", "绿色通道", "奖助",
+    "学费", "免修", "免听", "重修", "绩点", "第二学士学位", "微专业",
+    "毕业", "学位",
 )
 
 
@@ -192,8 +194,7 @@ def looks_like_refusal_answer(text: str) -> bool:
 
 
 _AMOUNT_QUESTION_TERMS = (
-    "多少钱", "多少元", "金额", "标准", "最高", "最低",
-    "费用", "学费", "工资", "补助", "贷款",
+    "多少钱", "多少元", "金额", "标准", "最高", "最低", "费用",
 )
 _AMOUNT_EVIDENCE_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:元|万元|%|块)")
 _AMOUNT_TOPICS = (
@@ -354,6 +355,7 @@ class HybridQA:
 
     def retrieve(self, query: str, top_k: int = 3):
         bm25_hits = self.bm25.retrieve(query, top_k=5)
+        bm25_hits = rerank_by_query_coverage(query, bm25_hits)
         best_bm25 = bm25_hits[0].score if bm25_hits else 0.0
 
         dense_hits: list[RetrievedChunk] = []
@@ -367,6 +369,7 @@ class HybridQA:
                 if index >= 0
             ]
             best_dense = dense_hits[0].score if dense_hits else 0.0
+            dense_hits = rerank_by_query_coverage(query, dense_hits)
 
         if best_bm25 < BM25_MIN and (
             not self.dense_available or best_dense < DENSE_MIN
@@ -381,6 +384,7 @@ class HybridQA:
             fused = merge_and_rerank([bm25_hits, dense_hits], top_k=top_k)
         else:
             fused = bm25_hits[:top_k]
+        fused = rerank_by_query_coverage(query, fused)
 
         self.last_hits = fused
         self.last_bm25 = best_bm25
@@ -604,3 +608,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+
